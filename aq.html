@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ml" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minute Harakah Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Sans+Malayalam:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans Malayalam', 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+    .page {
+      display: none;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 100%;
+      animation: fadeIn 0.5s;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+    .input-group {
+      margin: 30px 0;
+    }
+    label {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-family: 'Noto Sans Malayalam', 'Arial', sans-serif;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    button {
+      width: 100%;
+      padding: 15px 24px;
+      font-size: 20px;
+      margin: 10px 0;
+      cursor: pointer;
+      border: none;
+      background: #667eea;
+      color: white;
+      border-radius: 10px;
+      transition: all 0.3s;
+      font-family: 'Noto Sans Malayalam', 'Arial', sans-serif;
+      font-weight: bold;
+    }
+    button:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    button.secondary {
+      background: #6c757d;
+    }
+    button.secondary:hover:not(:disabled) {
+      background: #5a6268;
+    }
+    .leaderboard {
+      margin: 20px 0;
+    }
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin: 10px 0;
+      background: #f8f9fa;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .leaderboard-item.first {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      font-weight: bold;
+    }
+    .leaderboard-item.second {
+      background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    }
+    .leaderboard-item.third {
+      background: linear-gradient(135deg, #cd7f32 0%, #e8a87c 100%);
+    }
+    .rank {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    .letter {
+      font-size: 120px;
+      margin: 20px;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Scheherazade New', serif;
+      transition: all 0.3s ease;
+    }
+    .red { color: #dc2626; }
+    .blue { color: #2563eb; }
+    .scoreboard {
+      font-size: 24px;
+      margin-bottom: 30px;
+      padding: 15px 30px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .controls button {
+      flex: 1;
+      min-width: 120px;
+    }
+    .congratulations {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      margin: 20px 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .your-score {
+      text-align: center;
+      font-size: 28px;
+      margin: 20px 0;
+      color: #667eea;
+      font-weight: bold;
+    }
+    .empty-leaderboard {
+      text-align: center;
+      color: #6c757d;
+      font-size: 18px;
+      padding: 30px;
+    }
+    @media (max-width: 600px) {
+      .page {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .letter {
+        font-size: 80px;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 20px;
+      }
+      .scoreboard {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page 1: Name Entry -->
+  <div id="page1" class="page active">
+    <h1>Minute Harakah Challenge</h1>
+    <div class="input-group">
+      <label for="playerName">നിങ്ങളുടെ പേര് നൽകുക:</label>
+      <input type="text" id="playerName" placeholder="പേര് ടൈപ്പ് ചെയ്യുക..." oninput="checkName()">
+    </div>
+    <button id="nameNextBtn" onclick="goToLeaderboard()" disabled>അടുത്തത്</button>
+  </div>
+
+  <!-- Page 2: Leaderboard -->
+  <div id="page2" class="page">
+    <h1>മികച്ച മൂന്ന് സ്കോറുകൾ</h1>
+    <div class="leaderboard" id="leaderboardDisplay"></div>
+    <button onclick="startGame()">ഗെയിം ആരംഭിക്കുക</button>
+    <button class="secondary" onclick="newPlayer()">പുതിയ കളിക്കാരൻ</button>
+  </div>
+
+  <!-- Page 3: Game -->
+  <div id="page3" class="page">
+    <h1>Harakah Challenge</h1>
+    <div class="scoreboard">
+      ബാക്കി സമയം: <span id="timer">60</span> സെക്കൻഡ് |
+      സ്കോർ: <span id="score">0</span>
+    </div>
+    <div id="letter" class="letter red">ബ</div>
+    <div class="controls">
+      <button onclick="previous()" id="prevBtn">മുമ്പത്തെത്</button>
+      <button onclick="next()" id="nextBtn">അടുത്തത്</button>
+    </div>
+  </div>
+
+  <!-- Page 4: Results -->
+  <div id="page4" class="page">
+    <h1>ഫലം</h1>
+    <div id="congratsMessage"></div>
+    <div class="your-score" id="yourScore"></div>
+    <div class="leaderboard" id="finalLeaderboard"></div>
+    <button onclick="playAgain()">വീണ്ടും കളിക്കുക</button>
+    <button class="secondary" onclick="newPlayer()">പുതിയ കളിക്കാരൻ</button>
+  </div>
+
+  <script>
+    const rawLetters = [
+      "ا", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ",
+      "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع",
+      "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي"
+    ];
+    const harakats = ["َ", "ِ", "ُ"];
+    const extra = [
+      "اَبْ", "اَتْ", "اَثْ", "اَجْ", "اَحْ", "اَخْ", "اَدْ", "اَذْ",
+      "اَرْ", "اَزْ", "اَسْ", "اَشْ", "اَصْ", "اَضْ", "اَطْ", "اَظْ",
+      "اَعْ", "اَغْ", "اَفْ", "اَقْ", "اَكْ", "اَلْ", "اَمْ", "اَنْ",
+      "اَهْ", "اَوْ", "اَيْ"
+    ];
+    
+    const letters = [...extra];
+    rawLetters.forEach(l => {
+      harakats.forEach(h => {
+        letters.push(l + h);
+      });
+    });
+
+    let currentPlayer = "";
+    let history = [];
+    let index = -1;
+    let score = 0;
+    let timerInterval;
+    let gameActive = false;
+
+    // Load scores from localStorage
+    function getScores() {
+      const scores = localStorage.getItem('harakahScores');
+      return scores ? JSON.parse(scores) : [];
+    }
+
+    // Save scores to localStorage
+    function saveScore(name, score) {
+      const scores = getScores();
+      scores.push({ name, score, date: new Date().toISOString() });
+      scores.sort((a, b) => b.score - a.score);
+      localStorage.setItem('harakahScores', JSON.stringify(scores));
+    }
+
+    // Show page
+    function showPage(pageNum) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + pageNum).classList.add('active');
+    }
+
+    // Check if name is entered
+    function checkName() {
+      const name = document.getElementById('playerName').value.trim();
+      document.getElementById('nameNextBtn').disabled = name === '';
+    }
+
+    // Go to leaderboard
+    function goToLeaderboard() {
+      currentPlayer = document.getElementById('playerName').value.trim();
+      displayLeaderboard();
+      showPage(2);
+    }
+
+    // Display leaderboard
+    function displayLeaderboard() {
+      const scores = getScores();
+      const container = document.getElementById('leaderboardDisplay');
+      
+      if (scores.length === 0) {
+        container.innerHTML = '<div class="empty-leaderboard">ഇതുവരെ സ്കോറുകളൊന്നുമില്ല. ആദ്യത്തെ കളിക്കാരനാകൂ!</div>';
+        return;
+      }
+
+      const top3 = scores.slice(0, 3);
+      const ranks = ['🥇', '🥈', '🥉'];
+      const classes = ['first', 'second', 'third'];
+      
+      container.innerHTML = top3.map((s, i) => `
+        <div class="leaderboard-item ${classes[i]}">
+          <div>
+            <span class="rank">${ranks[i]}</span>
+            <span>${s.name}</span>
+          </div>
+          <div>${s.score}</div>
+        </div>
+      `).join('');
+    }
+
+    // Start game
+    function startGame() {
+      showPage(3);
+      gameActive = true;
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("prevBtn").disabled = false;
+      document.getElementById("score").textContent = 0;
+      document.getElementById("timer").textContent = 60;
+      
+      history = [];
+      index = -1;
+      score = 0;
+      
+      next();
+      
+      clearInterval(timerInterval);
+      let timeLeft = 60;
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          gameActive = false;
+          document.getElementById("nextBtn").disabled = true;
+          document.getElementById("prevBtn").disabled = true;
+          endGame();
+        }
+      }, 1000);
+    }
+
+    // Update letter display
+    function updateLetter() {
+      const letterDiv = document.getElementById("letter");
+      const letter = history[index];
+      letterDiv.textContent = letter;
+      letterDiv.className = 'letter ' + (index % 2 === 0 ? 'red' : 'blue');
+    }
+
+    // Next letter
+    function next() {
+      if (!gameActive) return;
+      
+      if (index < history.length - 1) {
+        index++;
+      } else {
+        const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+        history.push(randomLetter);
+        index++;
+        score++;
+        document.getElementById("score").textContent = score;
+      }
+      updateLetter();
+      document.getElementById("prevBtn").disabled = (index === 0);
+    }
+
+    // Previous letter
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateLetter();
+        document.getElementById("prevBtn").disabled = (index === 0);
+      }
+    }
+
+    // End game and show results
+    function endGame() {
+      saveScore(currentPlayer, score);
+      const scores = getScores();
+      const playerRank = scores.findIndex(s => s.name === currentPlayer && s.score === score) + 1;
+      
+      // Show congratulations if in top 3
+      const congratsDiv = document.getElementById('congratsMessage');
+      if (playerRank <= 3) {
+        const messages = [
+          '🎉 അഭിനന്ദനങ്ങൾ! ഒന്നാം സ്ഥാനം! 🥇',
+          '🎊 മികച്ചത്! രണ്ടാം സ്ഥാനം! 🥈',
+          '👏 നല്ലത്! മൂന്നാം സ്ഥാനം! 🥉'
+        ];
+        congratsDiv.innerHTML = `<div class="congratulations">${messages[playerRank - 1]}</div>`;
+      } else {
+        congratsDiv.innerHTML = '';
+      }
+      
+      // Show player's score
+      document.getElementById('yourScore').textContent = `നിങ്ങളുടെ സ്കോർ: ${score}`;
+      
+      // Show final leaderboard
+      const top3 = scores.slice(0, 3);
+      const ranks = ['🥇', '🥈', '🥉'];
+      const classes = ['first', 'second', 'third'];
+      
+      document.getElementById('finalLeaderboard').innerHTML = top3.map((s, i) => `
+        <div class="leaderboard-item ${classes[i]}">
+          <div>
+            <span class="rank">${ranks[i]}</span>
+            <span>${s.name}</span>
+          </div>
+          <div>${s.score}</div>
+        </div>
+      `).join('');
+      
+      showPage(4);
+    }
+
+    // Play again (same player)
+    function playAgain() {
+      displayLeaderboard();
+      showPage(2);
+    }
+
+    // New player
+    function newPlayer() {
+      document.getElementById('playerName').value = '';
+      checkName();
+      showPage(1);
+    }
+  </script>
+</body>
+</html>
