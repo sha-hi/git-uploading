@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arabic Letter Study</title>
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Scheherazade New', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-width: 700px;
+      width: 100%;
+      animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      text-align: center;
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.3s ease;
+    }
+    .counter {
+      text-align: center;
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .letter-display.combined {
+      color: #ea580c;
+    }
+    .letter-display {
+      font-size: 150px;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Scheherazade New', serif;
+      margin: 40px 0;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .letter-display.fatha {
+      color: #dc2626;
+    }
+    .letter-display.kasra {
+      color: #16a34a;
+    }
+    .letter-display.damma {
+      color: #2563eb;
+    }
+    .letter-display.sukoon {
+      color: #9333ea;
+    }
+    .letter-display.plain {
+      color: #1f2937;
+    }
+    .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      background: #667eea;
+      color: white;
+      border-radius: 10px;
+      transition: all 0.3s;
+      font-weight: bold;
+      min-width: 120px;
+    }
+    button:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    button.secondary {
+      background: #6c757d;
+    }
+    button.secondary:hover:not(:disabled) {
+      background: #5a6268;
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+    .color-fatha { background: #dc2626; }
+    .color-kasra { background: #16a34a; }
+    .color-damma { background: #2563eb; }
+    .color-sukoon { background: #9333ea; }
+    .color-plain { background: #1f2937; }
+    .color-combined { background: #ea580c; }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .letter-display {
+        font-size: 100px;
+        min-height: 120px;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 20px;
+        min-width: 100px;
+      }
+      .controls {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Arabic Letters Study</h1>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+    
+    <div class="counter" id="counter">1 / 168</div>
+    
+    <div class="letter-display plain" id="letterDisplay">ا</div>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color color-plain"></div>
+        <span>Plain</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-fatha"></div>
+        <span>Fatha ( َ )</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-kasra"></div>
+        <span>Kasra ( ِ )</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-damma"></div>
+        <span>Damma ( ُ )</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-sukoon"></div>
+        <span>Sukoon ( ْ )</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color color-combined"></div>
+        <span>Combined ( اَبْ )</span>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button onclick="previous()" id="prevBtn" disabled>← Previous</button>
+      <button class="secondary" onclick="reset()">Reset</button>
+      <button onclick="next()" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    // All letters in proper order with all harakats
+    const letters = [
+      // Alif
+      { letter: "ا", type: "plain" },
+      { letter: "اَ", type: "fatha" },
+      { letter: "اِ", type: "kasra" },
+      { letter: "اُ", type: "damma" },
+      { letter: "اْ", type: "sukoon" },
+      { letter: "اَاْ", type: "combined" },
+      
+      // Ba
+      { letter: "ب", type: "plain" },
+      { letter: "بَ", type: "fatha" },
+      { letter: "بِ", type: "kasra" },
+      { letter: "بُ", type: "damma" },
+      { letter: "بْ", type: "sukoon" },
+      { letter: "اَبْ", type: "combined" },
+      
+      // Ta
+      { letter: "ت", type: "plain" },
+      { letter: "تَ", type: "fatha" },
+      { letter: "تِ", type: "kasra" },
+      { letter: "تُ", type: "damma" },
+      { letter: "تْ", type: "sukoon" },
+      { letter: "اَتْ", type: "combined" },
+      
+      // Tha
+      { letter: "ث", type: "plain" },
+      { letter: "ثَ", type: "fatha" },
+      { letter: "ثِ", type: "kasra" },
+      { letter: "ثُ", type: "damma" },
+      { letter: "ثْ", type: "sukoon" },
+      { letter: "اَثْ", type: "combined" },
+      
+      // Jeem
+      { letter: "ج", type: "plain" },
+      { letter: "جَ", type: "fatha" },
+      { letter: "جِ", type: "kasra" },
+      { letter: "جُ", type: "damma" },
+      { letter: "جْ", type: "sukoon" },
+      { letter: "اَجْ", type: "combined" },
+      
+      // Ha
+      { letter: "ح", type: "plain" },
+      { letter: "حَ", type: "fatha" },
+      { letter: "حِ", type: "kasra" },
+      { letter: "حُ", type: "damma" },
+      { letter: "حْ", type: "sukoon" },
+      { letter: "اَحْ", type: "combined" },
+      
+      // Kha
+      { letter: "خ", type: "plain" },
+      { letter: "خَ", type: "fatha" },
+      { letter: "خِ", type: "kasra" },
+      { letter: "خُ", type: "damma" },
+      { letter: "خْ", type: "sukoon" },
+      { letter: "اَخْ", type: "combined" },
+      
+      // Dal
+      { letter: "د", type: "plain" },
+      { letter: "دَ", type: "fatha" },
+      { letter: "دِ", type: "kasra" },
+      { letter: "دُ", type: "damma" },
+      { letter: "دْ", type: "sukoon" },
+      { letter: "اَدْ", type: "combined" },
+      
+      // Thal
+      { letter: "ذ", type: "plain" },
+      { letter: "ذَ", type: "fatha" },
+      { letter: "ذِ", type: "kasra" },
+      { letter: "ذُ", type: "damma" },
+      { letter: "ذْ", type: "sukoon" },
+      { letter: "اَذْ", type: "combined" },
+      
+      // Ra
+      { letter: "ر", type: "plain" },
+      { letter: "رَ", type: "fatha" },
+      { letter: "رِ", type: "kasra" },
+      { letter: "رُ", type: "damma" },
+      { letter: "رْ", type: "sukoon" },
+      { letter: "اَرْ", type: "combined" },
+      
+      // Zay
+      { letter: "ز", type: "plain" },
+      { letter: "زَ", type: "fatha" },
+      { letter: "زِ", type: "kasra" },
+      { letter: "زُ", type: "damma" },
+      { letter: "زْ", type: "sukoon" },
+      { letter: "اَزْ", type: "combined" },
+      
+      // Seen
+      { letter: "س", type: "plain" },
+      { letter: "سَ", type: "fatha" },
+      { letter: "سِ", type: "kasra" },
+      { letter: "سُ", type: "damma" },
+      { letter: "سْ", type: "sukoon" },
+      { letter: "اَسْ", type: "combined" },
+      
+      // Sheen
+      { letter: "ش", type: "plain" },
+      { letter: "شَ", type: "fatha" },
+      { letter: "شِ", type: "kasra" },
+      { letter: "شُ", type: "damma" },
+      { letter: "شْ", type: "sukoon" },
+      { letter: "اَشْ", type: "combined" },
+      
+      // Sad
+      { letter: "ص", type: "plain" },
+      { letter: "صَ", type: "fatha" },
+      { letter: "صِ", type: "kasra" },
+      { letter: "صُ", type: "damma" },
+      { letter: "صْ", type: "sukoon" },
+      { letter: "اَصْ", type: "combined" },
+      
+      // Dad
+      { letter: "ض", type: "plain" },
+      { letter: "ضَ", type: "fatha" },
+      { letter: "ضِ", type: "kasra" },
+      { letter: "ضُ", type: "damma" },
+      { letter: "ضْ", type: "sukoon" },
+      { letter: "اَضْ", type: "combined" },
+      
+      // Ta
+      { letter: "ط", type: "plain" },
+      { letter: "طَ", type: "fatha" },
+      { letter: "طِ", type: "kasra" },
+      { letter: "طُ", type: "damma" },
+      { letter: "طْ", type: "sukoon" },
+      { letter: "اَطْ", type: "combined" },
+      
+      // Dha
+      { letter: "ظ", type: "plain" },
+      { letter: "ظَ", type: "fatha" },
+      { letter: "ظِ", type: "kasra" },
+      { letter: "ظُ", type: "damma" },
+      { letter: "ظْ", type: "sukoon" },
+      { letter: "اَظْ", type: "combined" },
+      
+      // Ayn
+      { letter: "ع", type: "plain" },
+      { letter: "عَ", type: "fatha" },
+      { letter: "عِ", type: "kasra" },
+      { letter: "عُ", type: "damma" },
+      { letter: "عْ", type: "sukoon" },
+      { letter: "اَعْ", type: "combined" },
+      
+      // Ghayn
+      { letter: "غ", type: "plain" },
+      { letter: "غَ", type: "fatha" },
+      { letter: "غِ", type: "kasra" },
+      { letter: "غُ", type: "damma" },
+      { letter: "غْ", type: "sukoon" },
+      { letter: "اَغْ", type: "combined" },
+      
+      // Fa
+      { letter: "ف", type: "plain" },
+      { letter: "فَ", type: "fatha" },
+      { letter: "فِ", type: "kasra" },
+      { letter: "فُ", type: "damma" },
+      { letter: "فْ", type: "sukoon" },
+      { letter: "اَفْ", type: "combined" },
+      
+      // Qaf
+      { letter: "ق", type: "plain" },
+      { letter: "قَ", type: "fatha" },
+      { letter: "قِ", type: "kasra" },
+      { letter: "قُ", type: "damma" },
+      { letter: "قْ", type: "sukoon" },
+      { letter: "اَقْ", type: "combined" },
+      
+      // Kaf
+      { letter: "ك", type: "plain" },
+      { letter: "كَ", type: "fatha" },
+      { letter: "كِ", type: "kasra" },
+      { letter: "كُ", type: "damma" },
+      { letter: "كْ", type: "sukoon" },
+      { letter: "اَكْ", type: "combined" },
+      
+      // Lam
+      { letter: "ل", type: "plain" },
+      { letter: "لَ", type: "fatha" },
+      { letter: "لِ", type: "kasra" },
+      { letter: "لُ", type: "damma" },
+      { letter: "لْ", type: "sukoon" },
+      { letter: "اَلْ", type: "combined" },
+      
+      // Meem
+      { letter: "م", type: "plain" },
+      { letter: "مَ", type: "fatha" },
+      { letter: "مِ", type: "kasra" },
+      { letter: "مُ", type: "damma" },
+      { letter: "مْ", type: "sukoon" },
+      { letter: "اَمْ", type: "combined" },
+      
+      // Noon
+      { letter: "ن", type: "plain" },
+      { letter: "نَ", type: "fatha" },
+      { letter: "نِ", type: "kasra" },
+      { letter: "نُ", type: "damma" },
+      { letter: "نْ", type: "sukoon" },
+      { letter: "اَنْ", type: "combined" },
+      
+      // Ha
+      { letter: "ه", type: "plain" },
+      { letter: "هَ", type: "fatha" },
+      { letter: "هِ", type: "kasra" },
+      { letter: "هُ", type: "damma" },
+      { letter: "هْ", type: "sukoon" },
+      { letter: "اَهْ", type: "combined" },
+      
+      // Waw
+      { letter: "و", type: "plain" },
+      { letter: "وَ", type: "fatha" },
+      { letter: "وِ", type: "kasra" },
+      { letter: "وُ", type: "damma" },
+      { letter: "وْ", type: "sukoon" },
+      { letter: "اَوْ", type: "combined" },
+      
+      // Ya
+      { letter: "ي", type: "plain" },
+      { letter: "يَ", type: "fatha" },
+      { letter: "يِ", type: "kasra" },
+      { letter: "يُ", type: "damma" },
+      { letter: "يْ", type: "sukoon" },
+      { letter: "اَيْ", type: "combined" }
+    ];
+
+    let currentIndex = 0;
+
+    function updateDisplay() {
+      const letterData = letters[currentIndex];
+      const display = document.getElementById('letterDisplay');
+      display.textContent = letterData.letter;
+      display.className = 'letter-display ' + letterData.type;
+      document.getElementById('counter').textContent = `${currentIndex + 1} / ${letters.length}`;
+      
+      // Update progress bar
+      const progress = ((currentIndex + 1) / letters.length) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+      
+      // Update button states
+      document.getElementById('prevBtn').disabled = currentIndex === 0;
+      document.getElementById('nextBtn').disabled = currentIndex === letters.length - 1;
+    }
+
+    function next() {
+      if (currentIndex < letters.length - 1) {
+        currentIndex++;
+        updateDisplay();
+      }
+    }
+
+    function previous() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateDisplay();
+      }
+    }
+
+    function reset() {
+      currentIndex = 0;
+      updateDisplay();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        next();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        previous();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        reset();
+      }
+    });
+
+    // Initialize
+    updateDisplay();
+  </script>
+</body>
+</html>
